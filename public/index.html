@@ -21,8 +21,8 @@
                     <img src="tourisem-logo.png" alt="לוגו משרד התיירות" class="official-logo-img">
                 </div>
                 <div class="header-text">
-                    <h1>משרד התיירות</h1>
-                    <p>עוזר תיירות דיגיטלי - מידע ושירותים למבקרים בישראל</p>
+                    <h1>משרד התיירות / Ministry of Tourism <span class="demo-badge">DEMO</span></h1>
+                    <p>עוזר דיגיטלי / Digital Assistant</p>
                 </div>
             </div>
         </header>
@@ -34,20 +34,21 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="message-content">
-                        <p><strong>ברוכים הבאים לעוזר התיירות הדיגיטלי של משרד התיירות!</strong></p>
-                        <p>אני כאן כדי לספק לכם מידע מקיף ועדכני על תיירות בישראל.</p>
+                        <p><strong>ברוכים הבאים! Welcome!</strong></p>
+                        <p>אני עוזר התיירות הדיגיטלי של משרד התיירות הישראלי.</p>
+                        <p>I'm the digital tourism assistant of the Israeli Ministry of Tourism.</p>
 
-                        <p><strong>שירותים זמינים:</strong></p>
+                        <p><strong>שירותים זמינים / Available Services:</strong></p>
                         <ul>
-                            <li>אתרים היסטוריים וארכיאולוגיים בכל רחבי הארץ</li>
-                            <li>שמורות טבע, חופים ונופי ישראל</li>
-                            <li>המלצות אוכל ומסעדות מקומיות</li>
-                            <li>אירועים תרבותיים ופסטיבלים</li>
-                            <li>מידע על לינה ואירוח</li>
-                            <li>הנחיות תחבורה ונגישות</li>
+                            <li>אתרים היסטוריים / Historical sites</li>
+                            <li>שמורות טבע וחופים / Nature reserves & beaches</li>
+                            <li>המלצות אוכל / Food recommendations</li>
+                            <li>אירועים ופסטיבלים / Events & festivals</li>
+                            <li>מידע על לינה / Accommodation info</li>
+                            <li>תחבורה ונגישות / Transportation & accessibility</li>
                         </ul>
 
-                        <p>שאלו אותי כל שאלה הקשורה לתיירות בישראל ואני אשמח לעזור!</p>
+                        <p>שאלו בעברית או באנגלית / Ask in Hebrew or English!</p>
                     </div>
                 </div>
             </div>
@@ -73,28 +74,32 @@
                         <i class="fas fa-landmark"></i>
                         ירושלים
                     </button>
+                    <button class="quick-btn" onclick="sendQuickMessage('What to see in Jerusalem?')">
+                        <i class="fas fa-landmark"></i>
+                        Jerusalem
+                    </button>
                     <button class="quick-btn" onclick="sendQuickMessage('אילו חופים מומלצים בישראל?')">
                         <i class="fas fa-water"></i>
                         חופים
                     </button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Best beaches in Israel?')">
+                        <i class="fas fa-water"></i>
+                        Beaches
+                    </button>
                     <button class="quick-btn" onclick="sendQuickMessage('איפה אוכלים טוב בתל אביב?')">
                         <i class="fas fa-utensils"></i>
-                        אוכל ומסעדות
+                        אוכל
                     </button>
-                    <button class="quick-btn" onclick="sendQuickMessage('אילו אירועים מתקיימים השבוע?')">
-                        <i class="fas fa-calendar"></i>
-                        אירועים
-                    </button>
-                    <button class="quick-btn" onclick="sendQuickMessage('איך מגיעים לאילת?')">
-                        <i class="fas fa-route"></i>
-                        תחבורה
+                    <button class="quick-btn" onclick="sendQuickMessage('Where to eat in Tel Aviv?')">
+                        <i class="fas fa-utensils"></i>
+                        Food
                     </button>
                 </div>
                 <div class="input-wrapper">
                     <input
                         type="text"
                         id="messageInput"
-                        placeholder="שאלו אותי כל שאלה על תיירות בישראל..."
+                        placeholder="שאלו על תיירות בישראל / Ask about tourism in Israel..."
                         maxlength="500"
                     >
                     <button id="sendButton" onclick="sendMessage()">
@@ -113,18 +118,11 @@
 
         <footer class="gov-footer">
             <div class="footer-content">
-                <div class="footer-links">
-                    <span class="footer-logo">
-                        <i class="fas fa-landmark"></i>
-                        מדינת ישראל
-                    </span>
-                    <span class="footer-divider">|</span>
-                    <span>משרד התיירות</span>
-                    <span class="footer-divider">|</span>
-                    <span>עוזר דיגיטלי</span>
+                <div class="pwc-logo-container">
+                    <img src="pwc_logo.png" alt="PwC Logo" class="pwc-logo">
                 </div>
                 <div class="footer-info">
-                    <small>שירות זה מופעל בטכנולוגיית בינה מלאכותית למטרות מידע בלבד</small>
+                    <small>גרסת הדגמה - שירות זה מופעל בטכנולוגיית בינה מלאכותית למטרות מידע בלבד</small>
                 </div>
             </div>
         </footer>

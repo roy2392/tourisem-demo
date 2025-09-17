@@ -31,13 +31,36 @@ class IsraeliTourismChatbot {
     }
 
     initializeTourismContext() {
-        this.tourismContext = `
+        this.tourismContext = {
+            hebrew: `
 אתה עוזר התיירות הרשמי של משרד התיירות הישראלי. ענה בעברית קצר וברור לשאלות תיירות.
 
 חשוב: תמיד ענה בקצרה! מקסימום 2-3 משפטים. מתאים לצ'אט בנייד. אל תשתמש בסימנים מיוחדים כמו # או * או -
 
 תן תשובות קצרות ומעשיות בלי סימנים מיוחדים בהתבסס על המידע שיסופק.
-`;
+`,
+            english: `
+You are the official tourism assistant of the Israeli Ministry of Tourism. Answer tourism questions clearly and concisely in English.
+
+Important: Always answer briefly! Maximum 2-3 sentences. Suitable for mobile chat. Don't use special characters like # or * or -
+
+Give short and practical answers without special characters based on the provided information.
+`
+        };
+    }
+
+    detectLanguage(text) {
+        // Simple language detection based on character sets
+        const hebrewRegex = /[\u0590-\u05FF]/;
+        const arabicRegex = /[\u0600-\u06FF]/;
+
+        if (hebrewRegex.test(text)) {
+            return 'hebrew';
+        } else if (arabicRegex.test(text)) {
+            return 'arabic';
+        } else {
+            return 'english';
+        }
     }
 
     adjustTextareaHeight() {
@@ -65,13 +88,28 @@ class IsraeliTourismChatbot {
             this.hideTypingIndicator();
             console.error('API Error:', error);
 
-            let errorMessage = 'מצטער, אירעה שגיאה. אנא נסו שוב מאוחר יותר.';
-            if (error.message.includes('429')) {
-                errorMessage = 'יותר מדי בקשות. אנא המתינו מספר שניות ונסו שוב.';
-            } else if (error.message.includes('403')) {
-                errorMessage = 'שגיאה באישור API. אנא בדקו את המפתח.';
-            } else if (error.message.includes('Network')) {
-                errorMessage = 'בעיית חיבור לאינטרנט. אנא בדקו את החיבור ונסו שוב.';
+            // Detect language for error messages
+            const userLanguage = this.detectLanguage(message);
+
+            let errorMessage;
+            if (userLanguage === 'hebrew') {
+                errorMessage = 'מצטער, אירעה שגיאה. אנא נסו שוב מאוחר יותר.';
+                if (error.message.includes('429')) {
+                    errorMessage = 'יותר מדי בקשות. אנא המתינו מספר שניות ונסו שוב.';
+                } else if (error.message.includes('403')) {
+                    errorMessage = 'שגיאה באישור API. אנא בדקו את המפתח.';
+                } else if (error.message.includes('Network')) {
+                    errorMessage = 'בעיית חיבור לאינטרנט. אנא בדקו את החיבור ונסו שוב.';
+                }
+            } else {
+                errorMessage = 'Sorry, an error occurred. Please try again later.';
+                if (error.message.includes('429')) {
+                    errorMessage = 'Too many requests. Please wait a few seconds and try again.';
+                } else if (error.message.includes('403')) {
+                    errorMessage = 'API authentication error. Please check the key.';
+                } else if (error.message.includes('Network')) {
+                    errorMessage = 'Internet connection problem. Please check your connection and try again.';
+                }
             }
 
             this.addBotMessage(errorMessage);
@@ -212,6 +250,10 @@ class IsraeliTourismChatbot {
     }
 
     async callGeminiAPI(userMessage) {
+        // Detect user's language
+        const userLanguage = this.detectLanguage(userMessage);
+        const context = userLanguage === 'hebrew' ? this.tourismContext.hebrew : this.tourismContext.english;
+
         // Use RAG to find relevant information
         let relevantInfo = '';
         if (typeof searchKnowledgeBase !== 'undefined') {
@@ -225,15 +267,26 @@ class IsraeliTourismChatbot {
         // Build conversation context
         let conversationContext = '';
         if (this.conversationHistory.length > 1) {
-            conversationContext = '\n\nהקשר השיחה הקודמת:\n';
-            const recentHistory = this.conversationHistory.slice(-4); // Last 2 exchanges
-            recentHistory.forEach((msg, index) => {
-                const role = msg.role === 'user' ? 'משתמש' : 'עוזר';
-                conversationContext += `${role}: ${msg.content}\n`;
-            });
+            if (userLanguage === 'hebrew') {
+                conversationContext = '\n\nהקשר השיחה הקודמת:\n';
+                const recentHistory = this.conversationHistory.slice(-4); // Last 2 exchanges
+                recentHistory.forEach((msg, index) => {
+                    const role = msg.role === 'user' ? 'משתמש' : 'עוזר';
+                    conversationContext += `${role}: ${msg.content}\n`;
+                });
+            } else {
+                conversationContext = '\n\nPrevious conversation context:\n';
+                const recentHistory = this.conversationHistory.slice(-4); // Last 2 exchanges
+                recentHistory.forEach((msg, index) => {
+                    const role = msg.role === 'user' ? 'User' : 'Assistant';
+                    conversationContext += `${role}: ${msg.content}\n`;
+                });
+            }
         }
 
-        const prompt = `${this.tourismContext}
+        let prompt;
+        if (userLanguage === 'hebrew') {
+            prompt = `${context}
 
 ${relevantInfo ? `מידע רלוונטי: ${relevantInfo}` : ''}
 
@@ -242,6 +295,19 @@ ${conversationContext}
 שאלה נוכחית: ${userMessage}
 
 חשוב מאוד: ענה רק 1-2 משפטים קצרים בלי סימנים מיוחדים כמו * או # או -. זה צ'אט נייד - תשובה קצרה ומועילה בטקסט רגיל בלבד. קח בחשבון את ההקשר של השיחה הקודמת.`;
+        } else {
+            prompt = `${context}
+
+${relevantInfo ? `Relevant information: ${relevantInfo}` : ''}
+
+${conversationContext}
+
+Current question: ${userMessage}
+
+Very important: Answer only in 1-2 short sentences without special characters like * or # or -. This is mobile chat - short and helpful answer in plain text only. Take into account the context of the previous conversation.
+
+IMPORTANT: Answer in the same language as the user's question. If the user writes in English, respond in English. If the user writes in Hebrew, respond in Hebrew.`;
+        }
 
         console.log('🔍 API Call Debug:');
         console.log('URL:', this.apiUrl);

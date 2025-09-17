@@ -80,6 +80,19 @@ body {
     line-height: 1.4;
 }
 
+.demo-badge {
+    display: inline-block;
+    background: #ff6b6b;
+    color: white;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    vertical-align: super;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
 .chat-container {
     flex: 1;
     display: flex;
@@ -103,12 +116,32 @@ body {
     overflow-y: auto;
     scroll-behavior: smooth;
     max-height: calc(100vh - 280px);
+    position: relative;
+}
+
+/* Demo watermark */
+.chat-messages::before {
+    content: 'DEMO - גרסת הדגמה';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 5rem;
+    font-weight: bold;
+    color: rgba(0, 82, 204, 0.03);
+    z-index: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1;
 }
 
 .message {
     display: flex;
     margin-bottom: 20px;
     animation: slideIn 0.3s ease-out;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes slideIn {
@@ -368,10 +401,11 @@ body {
 }
 
 .gov-footer {
-    background: #0052cc;
-    color: white;
-    padding: 15px 0;
+    background: #ffffff;
+    color: #333;
+    padding: 20px 0;
     margin-top: auto;
+    border-top: 2px solid #e1e8ed;
 }
 
 .footer-content {
@@ -379,31 +413,26 @@ body {
     margin: 0 auto;
     padding: 0 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
 
-.footer-links {
+.pwc-logo-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 8px;
-    font-weight: 500;
-    font-size: 0.9rem;
 }
 
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-}
-
-.footer-divider {
-    opacity: 0.6;
+.pwc-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
 }
 
 .footer-info {
-    opacity: 0.8;
+    color: #666;
     font-size: 0.8rem;
 }
 
@@ -613,17 +642,15 @@ body {
     }
 
     .gov-footer {
-        padding: 12px 0;
+        padding: 15px 0;
     }
 
     .footer-content {
         padding: 0 12px;
     }
 
-    .footer-links {
-        font-size: 0.75rem;
-        gap: 8px;
-        margin-bottom: 6px;
+    .pwc-logo {
+        height: 35px;
     }
 
     .footer-info {
