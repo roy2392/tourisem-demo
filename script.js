@@ -45,6 +45,13 @@ You are the official tourism assistant of the Israeli Ministry of Tourism. Answe
 Important: Always answer briefly! Maximum 2-3 sentences. Suitable for mobile chat. Don't use special characters like # or * or -
 
 Give short and practical answers without special characters based on the provided information.
+`,
+            russian: `
+Вы официальный туристический помощник Министерства туризма Израиля. Отвечайте на туристические вопросы ясно и кратко на русском языке.
+
+Важно: Всегда отвечайте кратко! Максимум 2-3 предложения. Подходит для мобильного чата. Не используйте специальные символы, такие как # или * или -
+
+Давайте короткие и практичные ответы без специальных символов на основе предоставленной информации.
 `
         };
     }
@@ -53,11 +60,14 @@ Give short and practical answers without special characters based on the provide
         // Simple language detection based on character sets
         const hebrewRegex = /[\u0590-\u05FF]/;
         const arabicRegex = /[\u0600-\u06FF]/;
+        const russianRegex = /[\u0400-\u04FF]/;
 
         if (hebrewRegex.test(text)) {
             return 'hebrew';
         } else if (arabicRegex.test(text)) {
             return 'arabic';
+        } else if (russianRegex.test(text)) {
+            return 'russian';
         } else {
             return 'english';
         }
@@ -100,6 +110,15 @@ Give short and practical answers without special characters based on the provide
                     errorMessage = 'שגיאה באישור API. אנא בדקו את המפתח.';
                 } else if (error.message.includes('Network')) {
                     errorMessage = 'בעיית חיבור לאינטרנט. אנא בדקו את החיבור ונסו שוב.';
+                }
+            } else if (userLanguage === 'russian') {
+                errorMessage = 'Извините, произошла ошибка. Пожалуйста, попробуйте позже.';
+                if (error.message.includes('429')) {
+                    errorMessage = 'Слишком много запросов. Пожалуйста, подождите несколько секунд и попробуйте снова.';
+                } else if (error.message.includes('403')) {
+                    errorMessage = 'Ошибка аутентификации API. Пожалуйста, проверьте ключ.';
+                } else if (error.message.includes('Network')) {
+                    errorMessage = 'Проблема с подключением к интернету. Пожалуйста, проверьте подключение и попробуйте снова.';
                 }
             } else {
                 errorMessage = 'Sorry, an error occurred. Please try again later.';
@@ -252,7 +271,14 @@ Give short and practical answers without special characters based on the provide
     async callGeminiAPI(userMessage) {
         // Detect user's language
         const userLanguage = this.detectLanguage(userMessage);
-        const context = userLanguage === 'hebrew' ? this.tourismContext.hebrew : this.tourismContext.english;
+        let context;
+        if (userLanguage === 'hebrew') {
+            context = this.tourismContext.hebrew;
+        } else if (userLanguage === 'russian') {
+            context = this.tourismContext.russian;
+        } else {
+            context = this.tourismContext.english;
+        }
 
         // Use RAG to find relevant information
         let relevantInfo = '';
@@ -272,6 +298,13 @@ Give short and practical answers without special characters based on the provide
                 const recentHistory = this.conversationHistory.slice(-4); // Last 2 exchanges
                 recentHistory.forEach((msg, index) => {
                     const role = msg.role === 'user' ? 'משתמש' : 'עוזר';
+                    conversationContext += `${role}: ${msg.content}\n`;
+                });
+            } else if (userLanguage === 'russian') {
+                conversationContext = '\n\nКонтекст предыдущего разговора:\n';
+                const recentHistory = this.conversationHistory.slice(-4); // Last 2 exchanges
+                recentHistory.forEach((msg, index) => {
+                    const role = msg.role === 'user' ? 'Пользователь' : 'Помощник';
                     conversationContext += `${role}: ${msg.content}\n`;
                 });
             } else {
@@ -295,6 +328,18 @@ ${conversationContext}
 שאלה נוכחית: ${userMessage}
 
 חשוב מאוד: ענה רק 1-2 משפטים קצרים בלי סימנים מיוחדים כמו * או # או -. זה צ'אט נייד - תשובה קצרה ומועילה בטקסט רגיל בלבד. קח בחשבון את ההקשר של השיחה הקודמת.`;
+        } else if (userLanguage === 'russian') {
+            prompt = `${context}
+
+${relevantInfo ? `Соответствующая информация: ${relevantInfo}` : ''}
+
+${conversationContext}
+
+Текущий вопрос: ${userMessage}
+
+Очень важно: Отвечайте только 1-2 короткими предложениями без специальных символов, таких как * или # или -. Это мобильный чат - короткий и полезный ответ только в виде обычного текста. Учитывайте контекст предыдущего разговора.
+
+ВАЖНО: Отвечайте на том же языке, на котором задан вопрос. Если пользователь пишет по-русски, отвечайте по-русски.`;
         } else {
             prompt = `${context}
 
