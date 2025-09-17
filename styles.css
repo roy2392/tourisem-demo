@@ -401,10 +401,11 @@ body {
 }
 
 .gov-footer {
-    background: #0052cc;
-    color: white;
-    padding: 15px 0;
+    background: #ffffff;
+    color: #333;
+    padding: 20px 0;
     margin-top: auto;
+    border-top: 2px solid #e1e8ed;
 }
 
 .footer-content {
@@ -412,31 +413,26 @@ body {
     margin: 0 auto;
     padding: 0 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
 
-.footer-links {
+.pwc-logo-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 8px;
-    font-weight: 500;
-    font-size: 0.9rem;
 }
 
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-}
-
-.footer-divider {
-    opacity: 0.6;
+.pwc-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
 }
 
 .footer-info {
-    opacity: 0.8;
+    color: #666;
     font-size: 0.8rem;
 }
 
@@ -646,17 +642,15 @@ body {
     }
 
     .gov-footer {
-        padding: 12px 0;
+        padding: 15px 0;
     }
 
     .footer-content {
         padding: 0 12px;
     }
 
-    .footer-links {
-        font-size: 0.75rem;
-        gap: 8px;
-        margin-bottom: 6px;
+    .pwc-logo {
+        height: 35px;
     }
 
     .footer-info {
