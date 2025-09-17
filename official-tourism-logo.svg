@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <defs>
+    <!-- Gradients for the figures -->
+    <radialGradient id="purpleGrad" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#e91e63;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ad1457;stop-opacity:1" />
+    </radialGradient>
+    <radialGradient id="blueGrad" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#2196f3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d47a1;stop-opacity:1" />
+    </radialGradient>
+    <radialGradient id="orangeGrad" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#ff9800;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e65100;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <!-- Left figure (pink/magenta) -->
+  <g transform="translate(15,15)">
+    <!-- Head -->
+    <circle cx="12" cy="12" r="8" fill="url(#purpleGrad)"/>
+    <!-- Arms raised up -->
+    <path d="M4 22 Q12 12 20 22" stroke="url(#purpleGrad)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Body -->
+    <ellipse cx="12" cy="32" rx="6" ry="12" fill="url(#purpleGrad)"/>
+    <!-- Legs spread -->
+    <ellipse cx="8" cy="48" rx="3" ry="10" fill="url(#purpleGrad)"/>
+    <ellipse cx="16" cy="48" rx="3" ry="10" fill="url(#purpleGrad)"/>
+  </g>
+
+  <!-- Right figure (blue) -->
+  <g transform="translate(155,15)">
+    <!-- Head -->
+    <circle cx="12" cy="12" r="8" fill="url(#blueGrad)"/>
+    <!-- Arms raised up -->
+    <path d="M4 22 Q12 12 20 22" stroke="url(#blueGrad)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Body -->
+    <ellipse cx="12" cy="32" rx="6" ry="12" fill="url(#blueGrad)"/>
+    <!-- Legs spread -->
+    <ellipse cx="8" cy="48" rx="3" ry="10" fill="url(#blueGrad)"/>
+    <ellipse cx="16" cy="48" rx="3" ry="10" fill="url(#blueGrad)"/>
+  </g>
+
+  <!-- Center orange sun with rays -->
+  <g transform="translate(100,20)">
+    <!-- Sun rays -->
+    <g stroke="url(#orangeGrad)" stroke-width="2" stroke-linecap="round">
+      <line x1="0" y1="-18" x2="0" y2="-15"/>
+      <line x1="12.7" y1="-12.7" x2="10.6" y2="-10.6"/>
+      <line x1="18" y1="0" x2="15" y2="0"/>
+      <line x1="12.7" y1="12.7" x2="10.6" y2="10.6"/>
+      <line x1="0" y1="18" x2="0" y2="15"/>
+      <line x1="-12.7" y1="12.7" x2="-10.6" y2="10.6"/>
+      <line x1="-18" y1="0" x2="-15" y2="0"/>
+      <line x1="-12.7" y1="-12.7" x2="-10.6" y2="-10.6"/>
+    </g>
+    <!-- Sun center -->
+    <circle cx="0" cy="0" r="10" fill="url(#orangeGrad)"/>
+  </g>
+
+  <!-- Grape cluster (bottom center) -->
+  <g transform="translate(100,55)">
+    <!-- Main grape cluster -->
+    <g fill="#4caf50">
+      <!-- Top row -->
+      <circle cx="0" cy="0" r="3.5"/>
+      <!-- Second row -->
+      <circle cx="-5" cy="6" r="3.5"/>
+      <circle cx="5" cy="6" r="3.5"/>
+      <circle cx="0" cy="6" r="3.5"/>
+      <!-- Third row -->
+      <circle cx="-7" cy="12" r="3"/>
+      <circle cx="0" cy="12" r="3.5"/>
+      <circle cx="7" cy="12" r="3"/>
+      <!-- Fourth row -->
+      <circle cx="-4" cy="18" r="3"/>
+      <circle cx="4" cy="18" r="3"/>
+      <circle cx="0" cy="18" r="3"/>
+      <!-- Fifth row -->
+      <circle cx="-2" cy="24" r="2.5"/>
+      <circle cx="2" cy="24" r="2.5"/>
+      <!-- Bottom -->
+      <circle cx="0" cy="28" r="2.5"/>
+    </g>
+  </g>
+</svg>

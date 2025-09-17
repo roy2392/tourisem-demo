@@ -1,0 +1,22 @@
+{
+  "name": "israeli-tourism-chatbot",
+  "version": "1.0.0",
+  "description": "Israeli Ministry of Tourism Digital Assistant with RAG",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8001",
+    "build": "mkdir -p public && cp index.html styles.css script.js tourism-knowledge-base.js tourisem-logo.png public/",
+    "start": "python3 -m http.server 8001"
+  },
+  "keywords": [
+    "tourism",
+    "israel",
+    "chatbot",
+    "ai",
+    "rag"
+  ],
+  "author": "Israeli Ministry of Tourism",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
